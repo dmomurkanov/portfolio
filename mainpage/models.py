@@ -1,10 +1,8 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 
-def upload_to_common(instance, filename):
+from .utilts import upload_to_common
 
-    model_name = instance.__class__.__name__.lower()
-    return f'uploads/{model_name}/{filename}'
 
 class PersonalInfo(models.Model):
     fullname = models.CharField("Полное имя", max_length=255)
@@ -17,6 +15,7 @@ class PersonalInfo(models.Model):
     github = models.CharField("Ссылка на GitHub", max_length=255, default="")
     email = models.CharField("Почта", max_length=255, default="")
     phone_number = models.CharField("Номер телефона", max_length=255, default="")
+
 
     class Meta:
         verbose_name = "Персональная информация"
@@ -55,6 +54,8 @@ class WorkExperience(models.Model):
     company_name = models.CharField("Название компании", max_length=100)
     position = models.CharField("Позиция на работе", max_length=255)
     responsibility = RichTextField("Обязанности на работе")
+    leadership = models.BooleanField("Лидерство", default=False)
+
 
     class Meta:
         verbose_name = "Опыт работы"

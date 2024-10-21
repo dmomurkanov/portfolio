@@ -59,7 +59,7 @@ ROOT_URLCONF = "resume.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR, "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -138,6 +138,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 # CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+STATICFILES_DIRS = [BASE_DIR]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -152,3 +153,7 @@ CKEDITOR_DEFAULT_CONFIGS = {
         'width': 300,
     },
 }
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
