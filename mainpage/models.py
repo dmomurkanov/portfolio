@@ -9,7 +9,7 @@ class PersonalInfo(models.Model):
     profession = models.CharField("Профессия", max_length=255)
     image = models.ImageField("Картинка баннера", upload_to=upload_to_common, null=True)
     image_mobile = models.ImageField("Картинка баннера для мобилки", upload_to=upload_to_common, null=True)
-    resume_file = models.FileField("Файл резюме", upload_to=upload_to_common)
+    resume_file = models.FileField("Файл резюме", upload_to=upload_to_common, null=True, blank=True)
     about_me = RichTextField("Текст обо мне")
     linked_in = models.CharField("Ссылка на LinkedIn", max_length=255, default="")
     github = models.CharField("Ссылка на GitHub", max_length=255, default="")
@@ -25,9 +25,11 @@ class PersonalInfo(models.Model):
         return self.fullname
 
 class AdditionalInfo(models.Model):
+    personal_info = models.ForeignKey(PersonalInfo, on_delete=models.CASCADE, related_name="additional_info", null=True)
     icon = models.ImageField("Иконка", upload_to=upload_to_common)
     title = models.CharField("Заголовок", max_length=50)
     text = RichTextField("Текст")
+
 
     class Meta:
         verbose_name = "Дополнительная информация"
@@ -78,3 +80,5 @@ class Portfolio(models.Model):
 
     def __str__(self):
         return self.project_name
+
+

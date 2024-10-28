@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.mainbanner {
+    display: flex;
+    background: linear-gradient(135deg, #1e0f3c, #090827);
+    color: #fff;
+    justify-content: center;
+}
+
+
+.about_me {
+    display: flex;
+    justify-content: center;
+}
+
+.experience {
+    display: flex;
+    justify-content: center;
+}
+
+.work {
+    display: flex;
+    justify-content: center;
+}
+
+.leadership {
+    display: flex;
+    justify-content: center;
+}
+
+.portfolio {
+    display: flex;
+    justify-content: center;
+}
+
+.contact {
+    display: flex;
+    justify-content: center;
+}
+
+
+footer {
+    display: flex;
+    justify-content: center;
+}
+
+.banner_image {
+    position: right;
+}

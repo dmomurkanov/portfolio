@@ -39,9 +39,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    #libs
     'ckeditor',
+    'rest_framework',
+    'drf_spectacular',
 
+    #apps
     "mainpage",
+
 ]
 
 MIDDLEWARE = [
@@ -138,7 +143,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 # CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-STATICFILES_DIRS = [BASE_DIR]
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -156,4 +163,10 @@ CKEDITOR_DEFAULT_CONFIGS = {
 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = [BASE_DIR / 'media']
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+

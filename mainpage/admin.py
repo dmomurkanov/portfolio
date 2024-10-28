@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import PersonalInfo, AdditionalInfo, Experience, WorkExperience, Portfolio
-
+from modeltranslation.admin import TabbedTranslationAdmin
 
 @admin.register(PersonalInfo)
 class PersonalInfoAdmin(admin.ModelAdmin):
@@ -25,3 +25,4 @@ class WorkExperienceAdmin(admin.ModelAdmin):
 @admin.register(Portfolio)
 class PortfolioAdmin(admin.ModelAdmin):
     pass
+
