@@ -7,10 +7,13 @@ class MainBannerSerializer(ModelSerializer):
         model = PersonalInfo
         fields = ('fullname', 'profession', 'resume_file', 'image', 'image_mobile')
 
+
 class AdditionalInfoSerializer(ModelSerializer):
     class Meta:
         model = AdditionalInfo
         fields = "__all__"
+
+
 class AboutMeSerializer(ModelSerializer):
     additional_info = AdditionalInfoSerializer(many=True)
     class Meta:
@@ -28,6 +31,7 @@ class WorkExperienceSerializer(ModelSerializer):
         model = WorkExperience
         fields = ("icon", "company_name", "position", "responsibility")
 
+
 class LeadershipSerializer(ModelSerializer):
     class Meta:
         model = WorkExperience
@@ -39,7 +43,9 @@ class PortfolioSerializer(ModelSerializer):
         model = Portfolio
         fields = ("image", "image_mobile", "project_name", "github_link", "live_demo")
 
+
 class ContactMeSerializer(ModelSerializer):
     class Meta:
         model = ContactMe
         fields = "__all__"
+

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import PersonalInfo, AdditionalInfo, Experience, WorkExperience, Portfolio
+from .models import PersonalInfo, AdditionalInfo, Experience, WorkExperience, Portfolio, ContactMe
 from modeltranslation.admin import TabbedTranslationAdmin
 
 @admin.register(PersonalInfo)
@@ -26,3 +26,6 @@ class WorkExperienceAdmin(admin.ModelAdmin):
 class PortfolioAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(ContactMe)
+class ContactMeAdmin(admin.ModelAdmin):
+    pass

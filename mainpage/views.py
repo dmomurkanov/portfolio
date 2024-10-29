@@ -1,18 +1,19 @@
-
-
-from django.shortcuts import render
-from django.template import context
-from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-
-# from serializers import
-from .models import *
-from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView
+from calendar import calendar
 from django.core.mail import EmailMessage
+from django.shortcuts import render
+
+from lib2to3.fixes.fix_input import context
+
+from rest_framework.response import Response
+from rest_framework import viewsets, status, mixins
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView, ListAPIView
+
+from drf_spectacular.utils import extend_schema
+
+from .models import *
 from .serializers import MainBannerSerializer, AboutMeSerializer, ExperienceSerializer, WorkExperienceSerializer, \
     LeadershipSerializer, PortfolioSerializer, ContactMeSerializer
-from .smtp import smtp
+from .smtp.sender import smtp
 
 
 def main_banner(request):
@@ -36,37 +37,47 @@ def main_banner(request):
         }
     )
 
-
-class MainBannerViewset(ListAPIView):
+@extend_schema(
+    tags=["Главный баннер"],
+    summary="Апишка для получения данных для главного баннера"
+)
+class MainBannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = PersonalInfo.objects.all()
     serializer_class = MainBannerSerializer
 
-class AboutMeViewset(ListAPIView):
+
+@extend_schema(
+    tags=["Главный баннер"],
+    summary="Апишка для получения данных для второй секции"
+)
+class AboutMeViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = PersonalInfo.objects.all()
     serializer_class = AboutMeSerializer
 
-class ExperienceViewset(ListAPIView):
+class ExperienceViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Experience.objects.all()
     serializer_class = ExperienceSerializer
 
 
-class WorkExperienceViewset(ListAPIView):
+
+class WorkExperienceViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = WorkExperience.objects.filter(leadership=False)
     serializer_class = WorkExperienceSerializer
 
-class LeadershipViewset(ListAPIView):
+class LeadershipViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = WorkExperience.objects.filter(leadership=True)
     serializer_class = LeadershipSerializer
 
-class PortfolioViewset(ListAPIView):
+
+class PortfolioViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Portfolio.objects.all()
     serializer_class = PortfolioSerializer
 
-
-class ContactMeViewSet(viewsets.ViewSet):
+@extend_schema(tags=["Отправка сообщения на почту"], summary='Отправка сообщения на почту')
+class ContactMeViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ContactMe.objects.all()
+    serializer_class = ContactMeSerializer
 
-    @extend_schema(tags=["Отправка сообщения на почту"], summary='Отправка сообщения на почту')
     def create(self, request):
         serializer = ContactMeSerializer(data=request.data, context={"context": context})
         if serializer.is_valid():
@@ -76,8 +87,8 @@ class ContactMeViewSet(viewsets.ViewSet):
             message = EmailMessage(
                 subject='Новое обращение',
                 body=message_text,
-                from_email="nurdinovbaiel2005@gmail.com",
-                to="nurdinovbaiel2005@gmail.com",
+                from_email="omurkanovd22@gmail.com",
+                to=["omurkanovd22@gmail.com",]
             )
             connection.send_messages([message])
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -83,6 +83,13 @@ class Portfolio(models.Model):
 
 
 class ContactMe(models.Model):
-    fullname = models.CharField("Полное имя", max_length=50)
-    email = models.CharField("эмейл", max_length=100)
-    text = models.CharField("сообщение", max_length=255)
+    fullname = models.CharField("ФИО", max_length=255)
+    email = models.EmailField("Почта", max_length=255)
+    text = models.TextField("Текст")
+
+    class Meta:
+        verbose_name = "Связь"
+        verbose_name_plural = "Связи"
+
+    def __str__(self):
+        return f"письмо от {self.fullname}"
