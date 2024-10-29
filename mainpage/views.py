@@ -1,10 +1,18 @@
+
+
 from django.shortcuts import render
+from django.template import context
+from drf_spectacular.utils import extend_schema
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+
 # from serializers import
 from .models import *
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView
-
+from django.core.mail import EmailMessage
 from .serializers import MainBannerSerializer, AboutMeSerializer, ExperienceSerializer, WorkExperienceSerializer, \
-    LeadershipSerializer, PortfolioSerializer
+    LeadershipSerializer, PortfolioSerializer, ContactMeSerializer
+from .smtp import smtp
 
 
 def main_banner(request):
@@ -54,3 +62,24 @@ class PortfolioViewset(ListAPIView):
     queryset = Portfolio.objects.all()
     serializer_class = PortfolioSerializer
 
+
+class ContactMeViewSet(viewsets.ViewSet):
+    queryset = ContactMe.objects.all()
+
+    @extend_schema(tags=["Отправка сообщения на почту"], summary='Отправка сообщения на почту')
+    def create(self, request):
+        serializer = ContactMeSerializer(data=request.data, context={"context": context})
+        if serializer.is_valid():
+            contact = serializer.save()
+            message_text = f"Пришло сообщение от {contact.fullname}, текст {contact.text}"
+            connection = smtp()
+            message = EmailMessage(
+                subject='Новое обращение',
+                body=message_text,
+                from_email="nurdinovbaiel2005@gmail.com",
+                to="nurdinovbaiel2005@gmail.com",
+            )
+            connection.send_messages([message])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

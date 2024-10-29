@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import PersonalInfo, AdditionalInfo, Experience, WorkExperience, Portfolio
+from .models import PersonalInfo, AdditionalInfo, Experience, WorkExperience, Portfolio, ContactMe
 
 
 class MainBannerSerializer(ModelSerializer):
@@ -38,3 +38,8 @@ class PortfolioSerializer(ModelSerializer):
     class Meta:
         model = Portfolio
         fields = ("image", "image_mobile", "project_name", "github_link", "live_demo")
+
+class ContactMeSerializer(ModelSerializer):
+    class Meta:
+        model = ContactMe
+        fields = "__all__"
